@@ -43,5 +43,10 @@ class curd:
 			display_warn(message=str(e)+' class: crud -> function: delete_user')
 			return False
 
-	def get_user(self, user_id: int) -> any:
-		return self.session.query(User).filter_by(id=user_id).one_or_none()
+	def get_user(self, user_id: int = None, user_token: str = None) -> any:
+		if user_id:
+			return self.session.query(User).filter_by(id=user_id).one_or_none()
+
+		if user_token:
+			return self.session.query(User).filter_by(token=user_token).one_or_none()
+

@@ -1,9 +1,16 @@
+import os
+import sys
+
 from fastapi import FastAPI, Body
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from uvicorn import run
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from database import curd
+
 app = FastAPI()
+curd_obj = curd()
 
 
 class Data(BaseModel):
@@ -13,9 +20,13 @@ class Data(BaseModel):
 
 @app.post('/')
 async def root(query: Data = Body(...)):
-	pred = 'sdjskdjskjdksjdksjd'
-	model_response = {'artical_summary': pred}
-	return JSONResponse(model_response)
+	user_obj = curd_obj.get_user(user_token=query.token)
+	if user_obj:
+		print(user_obj.email)
+		print(user_obj.password)
+		pred = 'sdjskdjskjdksjdksjd'
+		model_response = {'artical_summary': pred}
+		return JSONResponse(model_response)
 
 
 if '__main__' == __name__:
