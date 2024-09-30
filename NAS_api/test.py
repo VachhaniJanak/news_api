@@ -1,30 +1,9 @@
-from sqlalchemy.orm import sessionmaker
-
-from database import User
-from database import db_engine
+from database import curd
 
 
-class curd:
-	def __init__(self):
-		self.Session = sessionmaker(bind=db_engine)
-		self.session = self.Session()
+obj = curd()
+print(obj.get_user(user_id=1).email)
+print(obj.update_password(user_id=1, password='9876543221'))
+print(obj.create_user(email='abc@gmail.com', password='203920323'))
+print(obj.delete_user(user_id=2))
 
-	def create_user(self, email: str, password: str) -> None:
-		obj = User(email=email, password=password)
-		self.session.add(obj)
-		self.session.commit()
-
-	def update_password(self, user_id: int, password: str) -> None:
-		obj = self.session.query(User).filter_by(id=user_id).one_or_none()
-		if obj:
-			obj.password = password
-			self.session.commit()
-
-	def delete(self, user_id: int):
-		obj = self.session.query(User).filter_by(id=user_id).one_or_none()
-		if obj:
-			self.session.delete(obj)
-			self.session.commit()
-
-	def get_user(self, user_id: int):
-		return self.session.query(User).filter_by(id=user_id).one_or_none()
