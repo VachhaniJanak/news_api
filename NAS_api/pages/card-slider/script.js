@@ -1,4 +1,5 @@
 const card_wrapper = document.getElementById("card-wrapper");
+const loading = document.getElementById("loading");
 var flage = true;
 var flage0 = true;
 
@@ -6,15 +7,14 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function gettoken(){
-  for (let i of document.cookie.split(';')){
-    let key = i.split('=')[0];
-    if (key == 'token'){
-      return i.split('=')[1];
+function gettoken() {
+  for (let i of document.cookie.split(";")) {
+    let key = i.split("=")[0];
+    if (key == "token") {
+      return i.split("=")[1];
     }
   }
 }
-
 
 async function typeWriter(txt) {
   if (flage0) {
@@ -28,23 +28,22 @@ async function typeWriter(txt) {
   }
 }
 
-function getsummary(id) {
+async function getsummary(id) {
   if (flage) {
     flage = false;
-    const resp = fetch("http://127.0.0.1:8000/summary", {
+    loading.className = "loader";
+    await fetch("http://127.0.0.1:8000/summary", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({token_id:gettoken(), article_id: id }),
-    });
-
-    resp
-      .then((response) => response.json())
+      body: JSON.stringify({ token_id: gettoken(), article_id: id }),
+    }).then((response) => response.json())
       .then((data) => {
         typeWriter(data.summary);
       });
     flage = true;
+    loading.className = "";
   }
 }
 
@@ -69,7 +68,7 @@ function create_item(data) {
   description.className = "description";
   card_button.className = "card-button material-symbols-rounded";
 
-//   card_link.href = data.link;
+  //   card_link.href = data.link;
   card_image.src = data.img;
   card_image.alt = "Card Image";
   card_title.textContent = data.title;
@@ -95,7 +94,7 @@ window.onload = function () {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({token_id:gettoken(), count:1}),
+    body: JSON.stringify({ token_id: gettoken(), count: 1 }),
   });
 
   resp
@@ -110,5 +109,3 @@ function loaddata(data) {
     card_wrapper.appendChild(create_item(data[i]));
   }
 }
-
-

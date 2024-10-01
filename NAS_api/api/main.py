@@ -8,10 +8,13 @@ from pydantic import BaseModel
 from uvicorn import run
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from database import curd
+from summarize.model import MODEL
 
 app = FastAPI()
 curd_obj = curd()
+summ_model = MODEL()
 
 app.add_middleware(
 	CORSMiddleware,
@@ -66,11 +69,13 @@ txt = '''More than 60% of S&P 500 components outperformed the index this quarter
 
 '''
 
+import temp
 
 @app.post('/summary')
 async def get_summary(data: SummaryVerify = Body()):
 	if data.token_id == token['session_id']:
-		return JSONResponse({'summary': txt})
+		# return JSONResponse({'summary': summ_model.get_summary(temp.data[0])})
+		return  JSONResponse({'summary': txt})
 	return JSONResponse({'summary': ''})
 
 
