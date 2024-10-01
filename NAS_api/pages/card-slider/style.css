@@ -129,7 +129,6 @@ body {
 }
 
 .card-link .card-button {
-  z-index: 10;
   height: 35px;
   width: 35px;
   color: #5372f0;
@@ -142,7 +141,7 @@ body {
   transition: 0.4s ease;
 }
 
-.card-link:hover .card-button {
+.card-button:hover  {
   color: #fff;
   background: #5372f0;
 }

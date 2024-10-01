@@ -52,9 +52,13 @@ function login_function() {
         password: password,
       }),
     });
-    response.then(response => response.json()).then(data => {
-      document.cookie = `token=${data.session_id}`;
-    })
+    response
+      .then((response) => response.json())
+      .then((data) => {
+        document.cookie = `token=${data.session_id}; path=/`;
+        window.location.href =
+          "http://127.0.0.1:5500/NAS_api/pages/card-slider/index.html";
+      });
   }
 }
 
@@ -65,7 +69,13 @@ function signup_function() {
   const password = document.getElementById("reg_pwd").value;
   const confirm_password = document.getElementById("confirm_pwd").value;
 
-  if (email.trim() !== "" && password.trim() !== "" && confirm_password.trim() !== "" && username.trim() !== "" && password.trim() === confirm_password.trim()) {
+  if (
+    email.trim() !== "" &&
+    password.trim() !== "" &&
+    confirm_password.trim() !== "" &&
+    username.trim() !== "" &&
+    password.trim() === confirm_password.trim()
+  ) {
     const response = fetch("http://127.0.0.1:8000/create", {
       method: "POST",
       headers: {
@@ -77,8 +87,10 @@ function signup_function() {
         password: password,
       }),
     });
-    response.then(response => response.json()).then(data => {
-      console.log(data.message);
-    })
+    response
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.message);
+      });
   }
 }

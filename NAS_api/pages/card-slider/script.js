@@ -6,6 +6,16 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function gettoken(){
+  for (let i of document.cookie.split(';')){
+    let key = i.split('=')[0];
+    if (key == 'token'){
+      return i.split('=')[1];
+    }
+  }
+}
+
+
 async function typeWriter(txt) {
   if (flage0) {
     flage0 = false;
@@ -26,7 +36,7 @@ function getsummary(id) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ artical_id: id }),
+      body: JSON.stringify({token_id:gettoken(), article_id: id }),
     });
 
     resp
@@ -38,7 +48,7 @@ function getsummary(id) {
   }
 }
 
-function create_item() {
+function create_item(data) {
   const card_item = document.createElement("div");
   const card_link = document.createElement("a");
   const card_image = document.createElement("img");
@@ -59,15 +69,14 @@ function create_item() {
   description.className = "description";
   card_button.className = "card-button material-symbols-rounded";
 
-  //   card_link.href = "";
-  card_image.src = "images/designer.jpg";
+//   card_link.href = data.link;
+  card_image.src = data.img;
   card_image.alt = "Card Image";
-  card_title.textContent = "Lorem ipsum dolor sit explicabo adipisicing elit";
-  badge_designer.textContent = "Designer";
-  description.textContent =
-    "Market participants will also want to see non-tech firms deliver strong earnings in the months ahead to justify their gains. Responsive media query code for small screens.";
+  card_title.textContent = data.title;
+  badge_designer.textContent = data.channel;
+  description.textContent = data.description;
   card_button.innerHTML = "arrow_forward";
-  card_button.setAttribute("onclick", "getsummary(1)");
+  card_button.setAttribute("onclick", `getsummary(${data.id})`);
   card_item.appendChild(card_link);
   card_link.appendChild(card_image);
   card_link.appendChild(disc_item);
@@ -80,6 +89,26 @@ function create_item() {
   return card_item;
 }
 
-for (let i = 0; i < 10; i++) {
-  card_wrapper.appendChild(create_item());
+window.onload = function () {
+  const resp = fetch("http://127.0.0.1:8000/articals", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({token_id:gettoken(), count:1}),
+  });
+
+  resp
+    .then((response) => response.json())
+    .then((data) => {
+      loaddata(data.data);
+    });
+};
+
+function loaddata(data) {
+  for (let i = 0; i < data.length; i++) {
+    card_wrapper.appendChild(create_item(data[i]));
+  }
 }
+
+
