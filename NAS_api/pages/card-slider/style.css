@@ -1,0 +1,175 @@
+/* Importing Google fonts - Inter */
+@import url("https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background: linear-gradient(#eceffe, #c5cffc);
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.card-wrapper {
+  flex: 0.6;
+  width: 90%;
+  padding: 20px 10px;
+  overflow: hidden;
+}
+
+.summary {
+  flex: 0.4;
+  display: inline-block;
+  background-color: rgba(83, 114, 240, 0.2);
+  margin: 40px;
+  border-radius: 20px;
+  border: 2px #5372f0 solid;
+}
+
+.summary h2 {
+  margin: 20px;
+  text-align: center;
+}
+
+.summary p {
+  font-size: 18px;
+  margin: 50px 20px 20px 20px;
+  text-align: justify;
+  font-weight: 500;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.card-item .card-link {
+  display: flex;
+  background: #fff;
+  padding: 18px;
+  margin: 18px;
+  user-select: none;
+  border-radius: 12px;
+  text-decoration: none;
+  border: 2px solid transparent;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.05);
+  transition: 0.2s ease;
+}
+
+.card-item .card-link:active {
+  cursor: grabbing;
+}
+
+.card-item .card-link:hover {
+  border-color: #5372f0;
+}
+
+.card-link .card-image {
+  width: 30%;
+  border-radius: 10px;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+.item-header {
+  display: flex;
+  flex-direction: row;
+}
+.disc-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-link .badge {
+  color: #5372f0;
+  width: fit-content;
+  height: fit-content;
+  padding: 8px 16px;
+  font-size: 0.95rem;
+  border-radius: 12px;
+  font-weight: 500;
+  background: #dde4ff;
+  margin-left: 4px;
+}
+
+.card-link .badge-designer {
+  color: #b22485;
+  background: #f7dff5;
+}
+
+.card-link .badge-marketer {
+  color: #b25a2b;
+  background: #ffe3d2;
+}
+
+.card-link .badge-gamer {
+  color: #205c20;
+  background: #d6f8d6;
+}
+
+.card-link .badge-editor {
+  color: #856404;
+  background: #fff3cd;
+}
+
+.card-link .card-title {
+  color: #000;
+  font-size: 1.19rem;
+  font-weight: 600;
+}
+.card-title {
+  margin-left: 16px;
+}
+
+.card-link .card-button {
+  height: 35px;
+  width: 35px;
+  color: #5372f0;
+  margin: 10px;
+  background: none;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 2px solid #5372f0;
+  transform: rotate(-45deg);
+  transition: 0.4s ease;
+}
+
+.card-link:hover .card-button {
+  color: #fff;
+  background: #5372f0;
+}
+
+.card-wrapper .swiper-pagination-bullet {
+  height: 13px;
+  width: 13px;
+  opacity: 0.5;
+  background: #5372f0;
+}
+
+.card-wrapper .swiper-pagination-bullet-active {
+  opacity: 1;
+}
+
+.card-wrapper .swiper-slide-button {
+  color: #5372f0;
+  margin-top: -35px;
+}
+.description {
+  color: #000;
+  padding: 13px;
+  width: fit-content;
+  text-align: justify;
+}
+
+/* Responsive media query code for small screens */
+@media (max-width: 768px) {
+  .card-wrapper {
+    margin: 0 10px 25px;
+  }
+
+  .card-wrapper .swiper-slide-button {
+    display: none;
+  }
+}
