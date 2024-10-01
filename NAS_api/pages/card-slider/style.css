@@ -27,6 +27,11 @@ body {
 .summary {
   flex: 0.4;
   display: inline-block;
+  width: 500px;
+  min-height: 300px;
+  height: fit-content;
+  position: fixed;
+  right: 0%;
   background-color: rgba(83, 114, 240, 0.2);
   margin: 40px;
   border-radius: 20px;
@@ -124,6 +129,7 @@ body {
 }
 
 .card-link .card-button {
+  z-index: 10;
   height: 35px;
   width: 35px;
   color: #5372f0;

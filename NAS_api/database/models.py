@@ -16,4 +16,5 @@ class User(Base):
 	token = Column(String, default=token_urlsafe(32))
 
 
+
 Base.metadata.create_all(db_engine)
