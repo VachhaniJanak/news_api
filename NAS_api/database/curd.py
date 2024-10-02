@@ -1,7 +1,7 @@
 from sqlalchemy.orm import sessionmaker
 
 from .engine import db_engine
-from .models import User, UserSession
+from .models import User, UserSession, Article
 
 
 def display_warn(message: str, l=10):
@@ -43,8 +43,11 @@ class curd:
 			display_warn(message=str(e) + ' class: crud -> function: delete_user')
 			return False
 
-	def get_userbyid(self, user_id: int) -> any:
-		return self.session.query(User).filter_by(id=user_id).one_or_none()
+	def get_user(self, user_id: int = None, user_email: str = None) -> any:
+		if user_id:
+			return self.session.query(User).filter_by(id=user_id).one_or_none()
+		if user_email:
+			return self.session.query(User).filter_by(email=user_email).one_or_none()
 
 	def get_userbylogin(self, email: str, password: str) -> any:
 		return self.session.query(User).filter_by(email=email, password=password).one_or_none()
@@ -70,7 +73,7 @@ class curd:
 			display_warn(message=str(e) + ' class: crud -> function: delete_all_session')
 			return False
 
-	def delete_session(self, token_id:str):
+	def delete_session(self, token_id: str):
 		try:
 			session_obj = self.session.query(UserSession).filter_by(token_id=token_id).one_or_none()
 			self.session.delete(session_obj)
@@ -80,3 +83,23 @@ class curd:
 			display_warn(message=str(e) + ' class: crud -> function: delete_session')
 			return False
 
+	def get_session_by_token(self, token_id: str):
+		return self.session.query(UserSession).filter_by(token_id=token_id).one_or_none()
+
+	def add_article(self, headline: str, img_url: str, site_name: str, context: str):
+		try:
+			article = Article(
+				headline=headline,
+				img_url=img_url,
+				site_name=site_name,
+				context=context
+			)
+			self.session.add(article)
+			self.session.commit()
+			return article
+		except Exception as e:
+			display_warn(message=str(e) + ' class: crud -> function: add_article')
+			return False
+
+	def get_articles(self, article_id: int):
+		return self.session.query(Article).filter_by(id=article_id).one_or_none()

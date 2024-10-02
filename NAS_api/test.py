@@ -24,3 +24,18 @@ obj = curd()
 
 # print(obj.delete_session(token_id='etYj7AfgxFcQWJ5651haKOyCh5A6FpL4u666yn6nLh4'))
 
+
+# temp = {
+# 	'headline': 'Lorem ipsum dolor sit explicabo adipisicing elit',
+# 	'img_src': 'images/designer.jpg',
+# 	'site': 'BBC',
+# 	'context': 'Market participants will also want to see non-tech firms deliver strong earnings in the months ahead to justify their gains. Responsive media query code for small screens.',
+# 	'url': 'https://www.google.com'
+# },
+
+# obj.add_article(
+# 'Lorem ipsum dolor sit explicabo adipisicing elit',
+# 'images/designer.jpg',
+# 'BBC',
+# 'Market participants will also want to see non-tech firms deliver strong earnings in the months ahead to justify their gains. Responsive media query code for small screens.'
+# )

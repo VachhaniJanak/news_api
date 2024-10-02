@@ -43,3 +43,26 @@ In a soft landing scenario, the Magnificent Seven "should not have to carry the 
 "We are in the 'show me' stage for the soft landing," Shalett said.
 
 """]
+
+data = {1: {
+	'headline': 'Lorem ipsum dolor sit explicabo adipisicing elit',
+	'img_src': 'images/designer.jpg',
+	'site': 'BBC',
+	'context': 'Market participants will also want to see non-tech firms deliver strong earnings in the months ahead to justify their gains. Responsive media query code for small screens.',
+	'url': 'https://www.google.com'
+},
+	2: {
+		'headline': 'Lorem ipsum dolor sit explicabo adipisicing elit',
+		'img_src': 'images/designer.jpg',
+		'site': 'BBC',
+		'context': 'Market participants will also want to see non-tech firms deliver strong earnings in the months ahead to justify their gains. Responsive media query code for small screens.',
+		'url': 'https://www.google.com'
+	},
+	3: {
+		'headline': 'Lorem ipsum dolor sit explicabo adipisicing elit',
+		'img_src': 'images/designer.jpg',
+		'site': 'BBC',
+		'context': 'Market participants will also want to see non-tech firms deliver strong earnings in the months ahead to justify their gains. Responsive media query code for small screens.',
+		'url': 'https://www.google.com'
+	}
+}
