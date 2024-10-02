@@ -103,3 +103,15 @@ class curd:
 
 	def get_articles(self, article_id: int):
 		return self.session.query(Article).filter_by(id=article_id).one_or_none()
+
+	def get_articles_inrange(self, id_list=None, range: tuple = (0, 10)):
+		query = self.session.query(Article)
+
+		# If an id_list is provided, filter by id
+		if id_list:
+			query = query.filter(Article.id.in_(id_list))
+
+		# Apply range (offset and limit)
+		query = query.offset(range[0]).limit(range[1] - range[0])
+
+		return query.all()
