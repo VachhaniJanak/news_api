@@ -10,7 +10,7 @@ function sleep(ms) {
 function gettoken() {
   for (let i of document.cookie.split(";")) {
     let key = i.split("=")[0];
-    if (key == "token") {
+    if (key == "tokenid") {
       return i.split("=")[1];
     }
   }
@@ -32,13 +32,18 @@ async function getsummary(id) {
   if (flage) {
     flage = false;
     loading.className = "loader";
-    await fetch("http://127.0.0.1:8000/summary", {
+    await fetch("http://127.0.0.1:8000/get_summary", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ token_id: gettoken(), article_id: id }),
-    }).then((response) => response.json())
+      body: JSON.stringify({
+        token_id: gettoken(),
+        article_id: id,
+        count: 0,
+      }),
+    })
+      .then((response) => response.json())
       .then((data) => {
         typeWriter(data.summary);
       });
@@ -68,14 +73,14 @@ function create_item(data) {
   description.className = "description";
   card_button.className = "card-button material-symbols-rounded";
 
-  //   card_link.href = data.link;
-  card_image.src = data.img;
+  //   card_link.href = data.url;
+  card_image.src = data.img_src;
   card_image.alt = "Card Image";
-  card_title.textContent = data.title;
-  badge_designer.textContent = data.channel;
-  description.textContent = data.description;
+  card_title.textContent = data.headline;
+  badge_designer.textContent = data.site;
+  description.textContent = data.context.slice(0, 200) + "....";
   card_button.innerHTML = "arrow_forward";
-  card_button.setAttribute("onclick", `getsummary(${data.id})`);
+  card_button.setAttribute("onclick", `getsummary(${data.article_id})`);
   card_item.appendChild(card_link);
   card_link.appendChild(card_image);
   card_link.appendChild(disc_item);
@@ -89,12 +94,16 @@ function create_item(data) {
 }
 
 window.onload = function () {
-  const resp = fetch("http://127.0.0.1:8000/articals", {
+  const resp = fetch("http://127.0.0.1:8000/get_articles", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ token_id: gettoken(), count: 1 }),
+    body: JSON.stringify({
+      token_id: gettoken(),
+      article_id: 1,
+      count: 0,
+    }),
   });
 
   resp

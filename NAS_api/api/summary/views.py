@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 from NAS_api.database import curd
 
-# from NAS_api.summarize.model import MODEL
+from NAS_api.summarize.model import MODEL
 
 router = APIRouter()
 
@@ -18,8 +18,7 @@ class RequestData(BaseModel):
 class ArticalAPI:
 	def __init__(self):
 		self.curd_obj = curd()
-
-	# self.summ_model = MODEL()
+		self.summ_model = MODEL()
 
 	def summarize(self, data):
 		if not self.verify_token_id(token_id=data.token_id):
@@ -40,14 +39,13 @@ class ArticalAPI:
 				message='Token id not found.'
 			)
 
-		article = self.curd_obj.get_articles(article_id=data.article_id)
-		return self.response_with(
-			operation=True,
-			headline=article.headline,
-			img_src=article.img_url,
-			site=article.site_name,
-			context=article.context,
-		)
+		articles = self.curd_obj.get_articles_inrange(range=(0, 10))
+
+		return JSONResponse({'data': [{'article_id': article.id,
+		                               'headline': article.headline,
+		                               'img_src': article.img_url,
+		                               'site': article.site_name,
+		                               'context': article.context, } for article in articles]})
 
 	def verify_token_id(self, token_id: str):
 		user_session = self.curd_obj.get_session_by_token(token_id=token_id)
@@ -73,7 +71,8 @@ class ArticalAPI:
 
 	def generate_summary(self, article_id: int):
 		article = self.curd_obj.get_articles(article_id=article_id)
-		return article.context
+		# return article.context[:500]
+		return self.summ_model.get_summary(article.context)
 
 
 articles_api = ArticalAPI()
@@ -90,8 +89,8 @@ async def get_summary(data: RequestData = Body()):
 		})
 
 
-@router.post('/get_articals')
-async def get_articals(data: RequestData = Body()):
+@router.post('/get_articles')
+async def get_articles(data: RequestData = Body()):
 	try:
 		return articles_api.get_articles(data=data)
 	except Exception as e:

@@ -42,7 +42,7 @@ function login_function() {
   const password = document.getElementById("pwd").value;
 
   if (email.trim() !== "" && password.trim() !== "") {
-    const response = fetch("http://127.0.0.1:8000/", {
+    const response = fetch("http://127.0.0.1:8000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -55,7 +55,7 @@ function login_function() {
     response
       .then((response) => response.json())
       .then((data) => {
-        document.cookie = `token=${data.session_id}; path=/`;
+        document.cookie = `tokenid=${data.token_id}; path=/`;
         window.location.href =
           "http://127.0.0.1:5500/NAS_api/pages/card-slider/index.html";
       });
