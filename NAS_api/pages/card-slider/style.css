@@ -169,6 +169,26 @@ body {
   text-align: justify;
 }
 
+#load-more {
+  display: inline-block;
+  position: relative;
+  left: 25%;
+  margin-bottom: 100px;
+  color: #f7dff5;
+  font-size: 18px;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  background-color: #5372f0;
+  padding: 10px;
+  border: #5372f0 2px  solid;
+  border-radius: 12px;
+  transition: 0.4s ease;
+  cursor: pointer;
+}
+#load-more:hover{
+  background-color: #dde4ff;
+  color: #5372f0;
+}
+
 /* Responsive media query code for small screens */
 @media (max-width: 768px) {
   .card-wrapper {

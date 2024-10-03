@@ -118,3 +118,24 @@ function loaddata(data) {
     card_wrapper.appendChild(create_item(data[i]));
   }
 }
+
+function loadmore() {
+  const count = document.getElementById("card-wrapper").childElementCount;
+  const resp = fetch("http://127.0.0.1:8000/get_articles", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token_id: gettoken(),
+      article_id: 1,
+      count: count,
+    }),
+  });
+
+  resp
+    .then((response) => response.json())
+    .then((data) => {
+      loaddata(data.data);
+    });
+}

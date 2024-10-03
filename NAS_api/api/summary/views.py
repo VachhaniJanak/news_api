@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 from NAS_api.database import curd
 
-from NAS_api.summarize.model import MODEL
+# from NAS_api.summarize.model import MODEL
 
 router = APIRouter()
 
@@ -18,7 +18,7 @@ class RequestData(BaseModel):
 class ArticalAPI:
 	def __init__(self):
 		self.curd_obj = curd()
-		self.summ_model = MODEL()
+		# self.summ_model = MODEL()
 
 	def summarize(self, data):
 		if not self.verify_token_id(token_id=data.token_id):
@@ -39,7 +39,7 @@ class ArticalAPI:
 				message='Token id not found.'
 			)
 
-		articles = self.curd_obj.get_articles_inrange(range=(0, 10))
+		articles = self.curd_obj.get_articles_inrange(range=(data.count, data.count+8))
 
 		return JSONResponse({'data': [{'article_id': article.id,
 		                               'headline': article.headline,
@@ -71,8 +71,8 @@ class ArticalAPI:
 
 	def generate_summary(self, article_id: int):
 		article = self.curd_obj.get_articles(article_id=article_id)
-		# return article.context[:500]
-		return self.summ_model.get_summary(article.context)
+		return article.context[:500]
+		# return self.summ_model.get_summary(article.context)
 
 
 articles_api = ArticalAPI()
