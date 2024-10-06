@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 from requests import get
 
 urls = {
-	'parent': 'https://indianexpress.com/',
+	'parent': 'https://indianexpress.com',
 	'political': 'https://indianexpress.com/section/political-pulse/',
 	'business': 'https://indianexpress.com/section/business/',
 	'entertainment': 'https://indianexpress.com/section/entertainment/',
@@ -44,28 +44,15 @@ class scraper:
 		self.img_url = self.soup.find('span', class_='custom-caption').img['src']
 
 	def __scrape_context(self):
-		raw_context = self.soup.find('div', class_='story_details')
-
-		for html_tag in raw_context:
-			if html_tag.name == 'p' and 'read more' not in html_tag.text[
-			                                               :10].lower() and 'also read' not in html_tag.text[
-			                                                                                   :10].lower():
-				self.context += '\n' + html_tag.text
-
-			if html_tag.name == 'div':
-				if ' '.join(html_tag.get('class')) == 'ev-meter-content ie-premium-content-block':
-					break
-
-		for html_tag in raw_context.find('div', class_='ev-meter-content ie-premium-content-block'):
-
-			if html_tag.name == 'p' and 'read more' not in html_tag.text[
-			                                               :10].lower() and 'also read' not in html_tag.text[
-			                                                                                   :10].lower():
-				self.context += '\n' + html_tag.text
-
-			if html_tag.name == 'div':
-				if html_tag.get('id') == 'id_newsletter_subscription':
-					break
+		raw_context = self.soup.find('div', class_='story_details').find_all('p')
+		lenght = len(raw_context)
+		for i, html_tag in enumerate(raw_context):
+			temp = html_tag.text[:20].lower()
+			if 'read more' not in temp and 'also read' not in temp:
+				if lenght == i + 1:
+					self.context += '\n' + html_tag.text.lower().split('click')[0].title()
+				else:
+					self.context += '\n' + html_tag.text
 
 	def fetch_alldata(self):
 		self.__scrape_headline()
@@ -79,6 +66,7 @@ class scraper:
 class IndianExpress:
 	def __init__(self):
 
+		self.top_news = list()
 		self.entertainments = list()
 		self.sports = list()
 		self.politics = list()
@@ -89,15 +77,25 @@ class IndianExpress:
 
 		self.fetch_alldata()
 
-	def __trending(self):
-		pass
-
 	def __get_header(self):
 		return None
 
 	def __response(self, url, headers):
 		respone = get(url, headers=headers)
 		return BeautifulSoup(respone.content, 'html.parser')
+
+	def __top_news(self):
+		top_news_articles_urls = []
+		soup = self.__response(urls['parent'], self.__get_header())
+
+		for tags in soup.find_all('div', class_='other-article'):
+			top_news_articles_urls.append(tags.a['href'])
+
+		for url in top_news_articles_urls:
+			try:
+				self.top_news.append(scraper(url, headers=self.__get_header()))
+			except Exception as e:
+				print(e)
 
 	def __entertainment(self):
 		entertainment_articles_urls = []
@@ -198,10 +196,11 @@ class IndianExpress:
 				print(e)
 
 	def fetch_alldata(self):
+		self.__top_news()
 		self.__entertainment()
 		self.__sport()
 		self.__politics()
 		self.__business()
-		# self.__tech()
 		self.__education()
+		# self.__tech()
 		# self.__research()
