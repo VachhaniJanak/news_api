@@ -1,6 +1,17 @@
 from bs4 import BeautifulSoup
 from requests import get
 
+urls = {
+	'parent': 'https://indianexpress.com/',
+	'political': 'https://indianexpress.com/section/political-pulse/',
+	'business': 'https://indianexpress.com/section/business/',
+	'entertainment': 'https://indianexpress.com/section/entertainment/',
+	'sports': 'https://indianexpress.com/section/sports/',
+	'education': 'https://indianexpress.com/section/education/',
+	'research': 'https://indianexpress.com/section/research/',
+	'technology': 'https://indianexpress.com/section/technology/',
+}
+
 
 class scraper:
 	def __init__(self, url, headers):
@@ -17,22 +28,22 @@ class scraper:
 
 		self.fetch_alldata()
 
-	def scrape_headline(self):
-		self.headline = self.soup.find('h1', id='main-heading-article').text
+	def __scrape_headline(self):
+		self.headline = self.soup.find('h1').text
 
-	def scrape_description(self):
+	def __scrape_description(self):
 		self.description = self.soup.find('h2', class_='synopsis').text
 
-	def scrape_writer(self):
-		self.writer = self.written_by.find('a').text
+	def __scrape_writer(self):
+		self.writer = self.soup.find('div', class_="editor-details-new-change").find('a').text
 
-	def scrape_datetime(self):
-		self.datetime = self.written_by.find('span')['content']
+	def __scrape_datetime(self):
+		self.datetime = self.soup.find('div', class_="editor-details-new-change").find('span')['content']
 
-	def scrape_img(self):
+	def __scrape_img(self):
 		self.img_url = self.soup.find('span', class_='custom-caption').img['src']
 
-	def scrape_context(self):
+	def __scrape_context(self):
 		raw_context = self.soup.find('div', class_='story_details')
 
 		for html_tag in raw_context:
@@ -57,19 +68,16 @@ class scraper:
 					break
 
 	def fetch_alldata(self):
-		self.scrape_headline()
-		self.scrape_description()
-		self.scrape_writer()
-		self.scrape_datetime()
-		self.scrape_img()
-		self.scrape_context()
+		self.__scrape_headline()
+		self.__scrape_description()
+		self.__scrape_writer()
+		self.__scrape_datetime()
+		self.__scrape_img()
+		self.__scrape_context()
 
 
 class IndianExpress:
-	def __init__(self, url, headers):
-		self.respone = get(url, headers=headers)
-		self.headers = headers
-		self.soup = BeautifulSoup(self.respone.content, 'html.parser')
+	def __init__(self):
 
 		self.entertainments = list()
 		self.sports = list()
@@ -79,83 +87,121 @@ class IndianExpress:
 		self.educations = list()
 		self.researches = list()
 
+		self.fetch_alldata()
+
+	def __trending(self):
+		pass
+
+	def __get_header(self):
+		return None
+
+	def __response(self, url, headers):
+		respone = get(url, headers=headers)
+		return BeautifulSoup(respone.content, 'html.parser')
+
 	def __entertainment(self):
 		entertainment_articles_urls = []
-		for tags in self.soup.find('div', class_='nation'):
+		soup = self.__response(urls['entertainment'], self.__get_header())
+
+		for tags in soup.find('div', class_='nation'):
 			if tags.name == 'div' and tags['class'][0] == 'articles':
 				entertainment_articles_urls.append(tags.a['href'])
 
 		for url in entertainment_articles_urls:
-			self.entertainments.append(scraper(url, headers=self.headers))
+			try:
+				self.entertainments.append(scraper(url, headers=self.__get_header()))
+			except Exception as e:
+				print(e)
 
 	def __sport(self):
 		sport_articles_urls = []
-		for tags in self.soup.find('div', class_='nation'):
+		soup = self.__response(urls['sports'], self.__get_header())
+
+		for tags in soup.find('div', class_='nation'):
 			if tags.name == 'div' and tags['class'][0] == 'articles':
 				sport_articles_urls.append(tags.a['href'])
 
 		for url in sport_articles_urls:
-			self.sports.append(scraper(url, headers=self.headers))
+			try:
+				self.sports.append(scraper(url, headers=self.__get_header()))
+			except Exception as e:
+				print(e)
 
 	def __politics(self):
 		politics_articles_urls = []
-		for tags in self.soup.find('div', class_='nation'):
+		soup = self.__response(urls['political'], self.__get_header())
+
+		for tags in soup.find('div', class_='nation'):
 			if tags.name == 'div' and tags['class'][0] == 'articles':
 				politics_articles_urls.append(tags.a['href'])
 
 		for url in politics_articles_urls:
-			self.politics.append(scraper(url, headers=self.headers))
+			try:
+				self.politics.append(scraper(url, headers=self.__get_header()))
+			except Exception as e:
+				print(e)
 
 	def __business(self):
 		business_articles_urls = []
-		for tags in self.soup.find('div', class_='nation'):
+		soup = self.__response(urls['business'], self.__get_header())
+
+		for tags in soup.find('div', class_='nation'):
 			if tags.name == 'div' and tags['class'][0] == 'articles':
 				business_articles_urls.append(tags.a['href'])
 
 		for url in business_articles_urls:
-			self.businesses.append(scraper(url, headers=self.headers))
+			try:
+				self.businesses.append(scraper(url, headers=self.__get_header()))
+			except Exception as e:
+				print(e)
 
 	def __tech(self):
 		tech_articles_urls = []
-		for tags in self.soup.find('div', class_='nation'):
+		soup = self.__response(urls['technology'], self.__get_header())
+
+		for tags in soup.find('div', class_='nation'):
 			if tags.name == 'div' and tags['class'][0] == 'articles':
 				tech_articles_urls.append(tags.a['href'])
 
 		for url in tech_articles_urls:
-			self.techs.append(scraper(url, headers=self.headers))
+			try:
+				self.techs.append(scraper(url, headers=self.__get_header()))
+			except Exception as e:
+				print(e)
 
 	def __education(self):
 		education_articles_urls = []
-		for tags in self.soup.find('div', class_='nation'):
+		soup = self.__response(urls['education'], self.__get_header())
+
+		for tags in soup.find('div', class_='nation'):
 			if tags.name == 'div' and tags['class'][0] == 'articles':
 				education_articles_urls.append(tags.a['href'])
 
 		for url in education_articles_urls:
-			self.educations.append(scraper(url, headers=self.headers))
+			try:
+				self.educations.append(scraper(url, headers=self.__get_header()))
+			except Exception as e:
+				print(e)
 
 	def __research(self):
 		entertainment_articles_urls = []
-		for tags in self.soup.find('div', class_='nation'):
+		soup = self.__response(urls['research'], self.__get_header())
+
+		for tags in soup.find('div', class_='nation'):
 			if tags.name == 'div' and tags['class'][0] == 'articles':
 				entertainment_articles_urls.append(tags.a['href'])
 
 		for url in entertainment_articles_urls:
-			self.researches.append(scraper(url, headers=self.headers))
+			try:
+				self.researches.append(scraper(url, headers=self.__get_header()))
+			except Exception as e:
+				print(e)
 
 	def fetch_alldata(self):
 		self.__entertainment()
 		self.__sport()
 		self.__politics()
 		self.__business()
-		self.__tech()
+		# self.__tech()
 		self.__education()
-		self.__research()
-
-
-obj = IndianExpress('https://indianexpress.com/section/entertainment/', headers)
-print(obj)
-
-
-headers = {
-	'User-Agent': "Mozilla/6.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246"}
-
+		# self.__research()
