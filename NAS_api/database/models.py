@@ -35,11 +35,16 @@ class UserSession(Base):
 
 class Article(Base):
 	__tablename__ = 'articles'
+
 	id = Column(Integer, primary_key=True, autoincrement=True)
-	headline = Column(String)
+	headline = Column(String, unique=True, nullable=False)
+	description = Column(String)
+	writer = Column(String)
+	datetime = Column(DateTime, nullable=False)
 	img_url = Column(String)
-	site_name = Column(String)
-	context = Column(String)
+	context = Column(String, nullable=False)
+	site_name = Column(String, nullable=False)
+	url = Column(String, unique=True, nullable=False)
 
 
 Base.metadata.create_all(db_engine)

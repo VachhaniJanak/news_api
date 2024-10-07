@@ -25,6 +25,8 @@ class scraper:
 		self.datetime = ''
 		self.img_url = ''
 		self.context = ''
+		self.site_name = 'IndianExpress'
+		self.url = url
 
 		self.fetch_alldata()
 
