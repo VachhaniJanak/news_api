@@ -136,9 +136,3 @@ The News API is a FastAPI-based project that provides a news summarization and r
 - **Web Scraping**: Custom Scraper
 - **Authentication**: OAuth2 with JWT Tokens
 
-## License
-This project is licensed under the MIT License.
-
----
-
-This README gives a clear picture of your News API project with setup instructions, a list of features, API endpoint documentation, and known issues. You can customize it further to match your specific needs!
