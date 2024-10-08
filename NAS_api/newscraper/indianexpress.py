@@ -69,13 +69,13 @@ class IndianExpress:
 	def __init__(self):
 
 		self.top_news = list()
-		self.entertainments = list()
-		self.sports = list()
+		self.entertainment = list()
+		self.sport = list()
 		self.politics = list()
-		self.businesses = list()
-		self.techs = list()
-		self.educations = list()
-		self.researches = list()
+		self.business = list()
+		self.technology = list()
+		self.education = list()
+		self.research = list()
 
 		self.fetch_alldata()
 
@@ -109,7 +109,7 @@ class IndianExpress:
 
 		for url in entertainment_articles_urls:
 			try:
-				self.entertainments.append(scraper(url, headers=self.__get_header()))
+				self.entertainment.append(scraper(url, headers=self.__get_header()))
 			except Exception as e:
 				print(e)
 
@@ -123,7 +123,7 @@ class IndianExpress:
 
 		for url in sport_articles_urls:
 			try:
-				self.sports.append(scraper(url, headers=self.__get_header()))
+				self.sport.append(scraper(url, headers=self.__get_header()))
 			except Exception as e:
 				print(e)
 
@@ -151,7 +151,7 @@ class IndianExpress:
 
 		for url in business_articles_urls:
 			try:
-				self.businesses.append(scraper(url, headers=self.__get_header()))
+				self.business.append(scraper(url, headers=self.__get_header()))
 			except Exception as e:
 				print(e)
 
@@ -165,7 +165,7 @@ class IndianExpress:
 
 		for url in tech_articles_urls:
 			try:
-				self.techs.append(scraper(url, headers=self.__get_header()))
+				self.technology.append(scraper(url, headers=self.__get_header()))
 			except Exception as e:
 				print(e)
 
@@ -179,7 +179,7 @@ class IndianExpress:
 
 		for url in education_articles_urls:
 			try:
-				self.educations.append(scraper(url, headers=self.__get_header()))
+				self.education.append(scraper(url, headers=self.__get_header()))
 			except Exception as e:
 				print(e)
 
@@ -193,7 +193,7 @@ class IndianExpress:
 
 		for url in entertainment_articles_urls:
 			try:
-				self.researches.append(scraper(url, headers=self.__get_header()))
+				self.research.append(scraper(url, headers=self.__get_header()))
 			except Exception as e:
 				print(e)
 
@@ -206,3 +206,4 @@ class IndianExpress:
 		self.__education()
 		# self.__tech()
 		# self.__research()
+

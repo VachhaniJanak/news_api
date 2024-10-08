@@ -37,14 +37,48 @@ class Article(Base):
 	__tablename__ = 'articles'
 
 	id = Column(Integer, primary_key=True, autoincrement=True)
-	headline = Column(String, unique=True, nullable=False)
+
+	headline = Column(String, nullable=False, unique=True)
 	description = Column(String)
-	writer = Column(String)
 	datetime = Column(DateTime, nullable=False)
 	img_url = Column(String)
 	context = Column(String, nullable=False)
-	site_name = Column(String, nullable=False)
-	url = Column(String, unique=True, nullable=False)
+	url = Column(String, nullable=False)
+
+	site_id = Column(Integer, ForeignKey('sites.id'), nullable=True)
+	writer_id = Column(Integer, ForeignKey('writers.id'), nullable=True)
+	newstype_id = Column(Integer, ForeignKey('newstypes.id'), nullable=True)
+
+	site_name = relationship('SiteName', back_populates='article')
+	writer = relationship('Writer', back_populates='article')
+	news_type = relationship('NewsType', back_populates='article')
+
+
+class SiteName(Base):
+	__tablename__ = 'sites'
+	id = Column(Integer, primary_key=True, autoincrement=True)
+	name = Column(String, nullable=False, unique=True)
+
+	# Relationship with Article
+	article = relationship('Article', back_populates='site_name')
+
+
+class Writer(Base):
+	__tablename__ = 'writers'
+	id = Column(Integer, primary_key=True, autoincrement=True)
+	name = Column(String, nullable=False, unique=True)
+
+	# Relationship with Article
+	article = relationship('Article', back_populates='writer')
+
+
+class NewsType(Base):
+	__tablename__ = 'newstypes'
+	id = Column(Integer, primary_key=True, autoincrement=True)
+	type = Column(String, unique=True)
+
+	# Relationship with Article
+	article = relationship('Article', back_populates='news_type')
 
 
 Base.metadata.create_all(db_engine)
