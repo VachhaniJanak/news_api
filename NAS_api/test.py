@@ -1,4 +1,4 @@
-from database.curd import crudArticle, Article
+from database.curd import crudArticle, curdUser
 from datetime import datetime, timedelta
 
 crud = crudArticle()
@@ -13,3 +13,6 @@ crud = crudArticle()
 # print(datetime.now() - timedelta(hours=12))
 # print(timedelta(hours=12))
 # print()
+# crud = curdUser()
+
+# print(crud.get_id_or_email(user_id=2))

@@ -2,12 +2,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from uvicorn import run
 
-from api import login_reg_router, summary_router
+from api import login_reg_router, summary_router, similar_router, latest_router
 
 app = FastAPI()
 app.include_router(login_reg_router)
 app.include_router(summary_router)
-
+app.include_router(similar_router)
+app.include_router(latest_router)
 
 app.add_middleware(
 	CORSMiddleware,

@@ -6,6 +6,9 @@ from sqlalchemy.orm import sessionmaker
 from .engine import db_engine, vectordb_engine
 from .models import User, UserSession, Article, Writer, NewsType, SiteName
 
+Session = sessionmaker(bind=db_engine)
+session = Session()
+
 
 def display_warn(message: str, l=10):
 	print('\033[93m' + '[' + "@" * l, message, "@" * l + ']' + '\033[0m')
@@ -13,8 +16,7 @@ def display_warn(message: str, l=10):
 
 class curdUser:
 	def __init__(self) -> None:
-		self.Session = sessionmaker(bind=db_engine)
-		self.session = self.Session()
+		self.session = session
 
 	def create(self, username: str, email: str, password: str) -> bool | Type[User]:
 		try:
@@ -58,8 +60,7 @@ class curdUser:
 
 class crudSession:
 	def __init__(self) -> None:
-		self.Session = sessionmaker(bind=db_engine)
-		self.session = self.Session()
+		self.session = session
 
 	def create(self, user: any) -> int | bool:
 		try:
@@ -98,8 +99,7 @@ class crudSession:
 
 class crudArticle:
 	def __init__(self) -> None:
-		self.Session = sessionmaker(bind=db_engine)
-		self.session = self.Session()
+		self.session = session
 
 	def add_article(self, headline: str, description: str, datetime, img_url: str, context: str, url: str,
 	                site_name: str, writer: str, news_type: str) -> Type[Article] | bool:
