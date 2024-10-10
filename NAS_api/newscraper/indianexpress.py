@@ -77,8 +77,6 @@ class IndianExpress:
 		self.education = list()
 		self.research = list()
 
-		self.fetch_alldata()
-
 	def __get_header(self):
 		return None
 

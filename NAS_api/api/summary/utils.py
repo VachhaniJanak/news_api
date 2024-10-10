@@ -1,6 +1,6 @@
 from typing import Type
 
-from NAS_api.database import crudSession, crudArticle, UserSession
+from NAS_api.database import crudSession, crudArticle, UserSession, Article
 from NAS_api.summarize import MODEL
 
 
@@ -10,7 +10,7 @@ class summarizeArticle:
 		self.article_crud = crudArticle()
 		self.model = MODEL()
 
-	def summarize(self, data) -> dict[str, bool | str]:
+	def summarize(self, data) -> dict[str, bool | str | list[Type[Article]]]:
 		if not self.verify_token_id(token_id=data.token_id):
 			return {
 				'operation': False,
@@ -33,3 +33,5 @@ class summarizeArticle:
 		article = self.article_crud.get_by_ids(article_ids=(article_id,))
 		if article:
 			return self.model.get_summary(article[0].context)
+
+		return ''

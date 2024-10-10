@@ -10,7 +10,7 @@ class SimilaritySearch:
 		self.article_crud = crudArticle()
 		self.session_crud = crudSession()
 
-	def get_articles(self, data) -> dict[str, bool | str] | list[Type[Article]]:
+	def get_articles(self, data) -> dict[str, bool | str | list[Type[Article]]]:
 		if not self.verify_token_id(token_id=data.token_id):
 			return {
 				'operation': False,
@@ -18,20 +18,25 @@ class SimilaritySearch:
 			}
 
 		if data.article_id:
-			return self.article_crud.get_by_ids(
-				article_ids=vectordb_engine.get_by_id(
-					article_id=data.article_id,
-					top_n=data.upto
-				)
-			)
+			return {
+				'operation': True,
+				'articles': self.article_crud.get_by_ids(
+					article_ids=vectordb_engine.get_by_id(
+						article_id=data.article_id,
+						top_n=data.upto
+					)
+				)}
 
 		if data.query:
-			return self.article_crud.get_by_ids(
-				article_ids=vectordb_engine.get_by_query(
-					query=data.query,
-					top_n=data.upto
+			return {
+				'operation': True,
+				'articles': self.article_crud.get_by_ids(
+					article_ids=vectordb_engine.get_by_query(
+						query=data.query,
+						top_n=data.upto
+					)
 				)
-			)
+			}
 		return {
 			'operation': False,
 			'message': 'Articles Not Found'

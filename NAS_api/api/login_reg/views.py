@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Body
-from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from .utils import UserAPI
@@ -19,7 +18,7 @@ class RegData(BaseModel):
 	password: str
 
 
-class ResponseData(BaseModel):
+class ResponseFormat(BaseModel):
 	operation: bool
 	token_id: str = None
 	username: str = None
@@ -27,23 +26,23 @@ class ResponseData(BaseModel):
 	error: str = None
 
 
-@router.post('/create', response_model=ResponseData)
+@router.post('/create', response_model=ResponseFormat)
 async def create(data: RegData = Body()):
 	try:
 		return user_api.create(data=data)
 	except Exception as e:
-		return JSONResponse({
+		return {
 			'operation': False,
 			'error': str(e),
-		})
+		}
 
 
-@router.post('/login', response_model=ResponseData)
+@router.post('/login', response_model=ResponseFormat)
 async def login(data: LoginData = Body(), ):
 	try:
 		return user_api.login(data=data)
 	except Exception as e:
-		return JSONResponse({
+		return {
 			'operation': False,
 			'error': str(e)
-		})
+		}

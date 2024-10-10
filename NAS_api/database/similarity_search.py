@@ -12,11 +12,11 @@ class VectorDB:
 		self.__client = chromadb.PersistentClient(path=str(path))
 		self.__articles_collection = self.__client.get_or_create_collection(name="articles")
 
-	def create(self, article_id: int, document: str) -> bool | None:
+	def create(self, article_id: int, document: str, headline: str) -> bool | None:
 		try:
 			embedding = self.__model.encode(document).tolist()
 			self.__articles_collection.add(
-				documents=[document],
+				documents=[headline],
 				ids=[str(article_id)],
 				embeddings=[embedding]
 			)
@@ -46,4 +46,12 @@ class VectorDB:
 			return tuple(int(id) for id in ids)
 		except Exception as e:
 			display_warn(message=str(e) + 'Class -> VectorDB : func -> get_query')
+			return False
+
+	def delete_by_ids(self, articles_ids: tuple[int]) -> bool:
+		try:
+			self.__articles_collection.delete(ids=[str(article_id) for article_id in articles_ids])
+			return True
+		except Exception as e:
+			display_warn(message=str(e) + 'Class -> VectorDB : func -> delete_by_ids')
 			return False

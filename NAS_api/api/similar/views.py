@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Type
 
 from fastapi import APIRouter, Body
 from pydantic import BaseModel
@@ -33,21 +32,21 @@ class Article(BaseModel):
 	id: int
 	headline: str
 	description: str
-	datetime: Type[datetime]
+	datetime: datetime
 	img_url: str
 	context: str
 	url: str
 
-	site_name: Type[SiteName]
-	writer: Type[Writer]
-	news_type: Type[NewsType]
+	site_name: SiteName
+	writer: Writer
+	news_type: NewsType
 
 
 class ResponseFormat(BaseModel):
 	operation: bool
-	articles: list[Type[Article]]
-	message: str
-	error: str
+	articles: list[Article] = None
+	message: str = None
+	error: str = None
 
 
 @router.post('/similar', response_model=ResponseFormat)

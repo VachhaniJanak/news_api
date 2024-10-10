@@ -62,7 +62,7 @@ class crudSession:
 	def __init__(self) -> None:
 		self.session = session
 
-	def create(self, user: any) -> int | bool:
+	def create(self, user: Type[User]) -> int | bool:
 		try:
 			session_obj = UserSession(user=user)
 			self.session.add(session_obj)
@@ -73,7 +73,7 @@ class crudSession:
 			display_warn(message=str(e) + ' class: crudSession -> function: create')
 			return False
 
-	def delete_all(self, user: any) -> bool:
+	def delete_all(self, user: Type[User]) -> bool:
 		try:
 			self.session.query(UserSession).filter_by(user=user).delete()
 			self.session.commit()
@@ -101,7 +101,8 @@ class crudArticle:
 	def __init__(self) -> None:
 		self.session = session
 
-	def add_article(self, headline: str, description: str, datetime, img_url: str, context: str, url: str,
+	def add_article(self, headline: str, description: str, datetime: Type[datetime], img_url: str, context: str,
+	                url: str,
 	                site_name: str, writer: str, news_type: str) -> Type[Article] | bool:
 		try:
 			article = Article(
@@ -122,7 +123,8 @@ class crudArticle:
 
 			vectordb_engine.create(
 				article_id=article.id,
-				document=article.description,
+				headline=article.headline,
+				document=article.context,
 			)
 			return article
 
@@ -162,7 +164,10 @@ class crudArticle:
 	def delete_old(self, days: int = 1) -> bool:
 		try:
 			time_diff = datetime.now() - timedelta(days=days)
-			self.session.query(Article).filter(Article.datetime <= time_diff).delete()
+			obj = self.session.query(Article).filter(Article.datetime <= time_diff)
+			articles_ids = tuple(article.id for article in obj.all())
+			vectordb_engine.delete_by_ids(articles_ids=articles_ids)
+			obj.delete(synchronize_session=False)
 			self.session.commit()
 			return True
 		except Exception as e:
