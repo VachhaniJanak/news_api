@@ -20,7 +20,7 @@ class RegData(BaseModel):
 
 
 class ResponseData(BaseModel):
-	operation: bool = None
+	operation: bool
 	token_id: str = None
 	username: str = None
 	message: str = None

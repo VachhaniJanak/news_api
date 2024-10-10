@@ -2,10 +2,10 @@ from fastapi import APIRouter, Body
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
-from .utils import ArticalAPI
+from .utils import summarizeArticle
 
 router = APIRouter()
-articles_api = ArticalAPI()
+summarize_article = summarizeArticle()
 
 
 class RequestBody(BaseModel):
@@ -14,7 +14,7 @@ class RequestBody(BaseModel):
 
 
 class ResponseBody(BaseModel):
-	operation: bool = None
+	operation: bool
 	summary: str = None
 	message: str = None
 	error: str = None
@@ -23,7 +23,7 @@ class ResponseBody(BaseModel):
 @router.post('/summary', response_model=ResponseBody)
 async def get_summary(data: RequestBody = Body()):
 	try:
-		return articles_api.summarize(data=data)
+		return summarize_article.summarize(data=data)
 	except Exception as e:
 		return JSONResponse({
 			'operation': False,

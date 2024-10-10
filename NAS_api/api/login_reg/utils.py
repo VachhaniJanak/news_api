@@ -1,12 +1,14 @@
-from NAS_api.database import curdUser, crudSession
+from typing import Type
+
+from NAS_api.database import curdUser, crudSession, User
 
 
 class UserAPI:
-	def __init__(self):
+	def __init__(self) -> None:
 		self.user_curd = curdUser()
 		self.session_curd = crudSession()
 
-	def create(self, data):
+	def create(self, data) -> dict[str, bool | str]:
 		if self.is_email_exist(email=data.email):
 			return {
 				'operation': False,
@@ -24,14 +26,14 @@ class UserAPI:
 			'message': 'Account create successfully.'
 		}
 
-	def is_email_exist(self, email: str) -> any:
+	def is_email_exist(self, email: str) -> Type[User] | bool:
 		user = self.user_curd.get_id_or_email(user_email=email)
 		if user:
 			return user
 		else:
 			return False
 
-	def login(self, data):
+	def login(self, data) -> dict[str, bool | str]:
 		user = self.is_email_exist(email=data.email)
 		if user:
 			return self.check_password(user=user, data=data)
@@ -41,7 +43,7 @@ class UserAPI:
 				'message': 'Email does not exists.'
 			}
 
-	def check_password(self, user, data):
+	def check_password(self, user, data) -> dict[str, bool | str]:
 		if user.password == data.password:
 			self.session_curd.delete_all(user=user)
 			token_id = self.session_curd.create(user=user)
