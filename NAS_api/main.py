@@ -10,7 +10,7 @@ from newscraper.indianexpress import IndianExpress
 
 from threading import Thread
 
-flage = True
+flag = True
 
 app = FastAPI()
 news_site_objs = (IndianExpress(),)
@@ -24,10 +24,10 @@ app.include_router(latest_router)
 
 
 def fetch_news():
-	global flage
+	global flag
 	global old_datetime
-	if flage and (datetime.now() - old_datetime >= timedelta(hours=1)):
-		flage = False
+	if flag and (datetime.now() - old_datetime >= timedelta(hours=1)):
+		flag = False
 
 		for news_site_obj in news_site_objs:
 			news_site_obj.fetch_alldata()
@@ -39,7 +39,7 @@ def fetch_news():
 					article_crud.add_article(**article.__dict__)
 
 		old_datetime = datetime.now()
-		flage = True
+		flag = True
 
 
 app.add_middleware(
