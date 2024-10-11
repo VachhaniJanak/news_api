@@ -16,8 +16,7 @@ The News API is a FastAPI-based project that provides a news summarization and r
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/news-api.git
-   cd news-api
+   git clone https://github.com/VachhaniJanak/news_api.git
    ```
 
 2. Install dependencies:
@@ -26,7 +25,8 @@ The News API is a FastAPI-based project that provides a news summarization and r
    ```
 
 3. Run the FastAPI application:
-   ```bash
+   ```bash    
+   cd NAS_api
    python3 main.py
    ```
 
