@@ -11,7 +11,6 @@ The News API is a FastAPI-based project that provides a news summarization and r
 - **News Scraping**: Fetches news from supported websites, currently including:
   - Indian Express
   - (Add more sources as required)
-- **Bug Awareness**: Known issues include occasional inaccurate summaries and other minor bugs.
 
 ## Installation
 
@@ -26,14 +25,9 @@ The News API is a FastAPI-based project that provides a news summarization and r
    pip install -r requirements.txt
    ```
 
-3. Set up the database:
+3. Run the FastAPI application:
    ```bash
-   python create_db.py
-   ```
-
-4. Run the FastAPI application:
-   ```bash
-   uvicorn main:app --reload
+   python3 main.py
    ```
 
 ## API Endpoints
@@ -41,82 +35,150 @@ The News API is a FastAPI-based project that provides a news summarization and r
 ### User Authentication
 
 #### Login
-- **URL**: `/auth/login`
+- **URL**: `/login`
 - **Method**: `POST`
 - **Request Body**:
   ```json
   {
-    "username": "your_username",
-    "password": "your_password"
+     "email": "string",
+     "password": "string"
   }
   ```
 - **Response**:
   ```json
   {
-    "access_token": "your_access_token",
-    "token_type": "bearer"
+     "operation": true,
+     "token_id": "string",
+     "username": "string",
+     "message": "string",
+     "error": "string"
+  }
+  ``` 
+  
+#### Create
+- **URL**: `/create`
+- **Method**: `POST`
+- **Request Body**:
+  ```json
+  {
+     "username": "string",
+     "email": "string",
+     "password": "string"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+     "operation": true,
+     "token_id": "string",
+     "username": "string",
+     "message": "string",
+     "error": "string"
   }
   ```
 
 ### News Summarization
 
+
 #### Get Summarized News
-- **URL**: `/news/summarize/{article_id}`
-- **Method**: `GET`
-- **Headers**:
-  - `Authorization: Bearer <access_token>`
+- **URL**: `/summary`
+- **Method**: `POST`
+- **Request Body**:
+  ```json
+  {
+     "token_id": "string",
+     "article_id": 0
+  }
+  ```
 - **Response**:
   ```json
   {
-    "article_id": "123",
-    "title": "News Title",
-    "summary": "Summarized content of the news article...",
-    "source": "Indian Express",
-    "published_at": "2023-09-25"
-  }
+     "operation": true,
+     "summary": "string",
+     "message": "string",
+     "error": "string"
+  }          
   ```
-
 ### Similar News
 
 #### Get Similar News
-- **URL**: `/news/similar/{article_id}`
-- **Method**: `GET`
-- **Headers**:
-  - `Authorization: Bearer <access_token>`
+- **URL**: `/similar`
+- **Method**: `POST`
+- **Request Body**:
+  ```json
+  {
+     "token_id": "string",
+     "article_id": 0,
+     "query": "string",
+     "upto": 0
+  }
+  ```
 - **Response**:
   ```json
-  [
+  {
+  "operation": true,
+  "articles": [
     {
-      "article_id": "456",
-      "title": "Similar News Title",
-      "summary": "Summary of the similar news article...",
-      "source": "Indian Express",
-      "published_at": "2023-09-20"
+      "id": 0,
+      "headline": "string",
+      "description": "string",
+      "datetime": "2024-10-11T18:21:35.660Z",
+      "img_url": "string",
+      "context": "string",
+      "url": "string",
+      "site_name": {
+        "name": "string"
+      },
+      "writer": {
+        "name": "string"
+      },
+      "news_type": {
+        "type": "string"
+      }
     }
-  ]
+  ],
+  "message": "string",
+  "error": "string"
+  }
   ```
 
-### Fetch News (Scraping)
-- **URL**: `/news/fetch`
+### Fetch News
+- **URL**: `/articles`
 - **Method**: `POST`
-- **Headers**:
-  - `Authorization: Bearer <access_token>`
-- **Body**:
+- **Request Body**:
   ```json
   {
-    "source": "indianexpress",
-    "url": "https://indianexpress.com/some-news-article"
+     "token_id": "string",
+     "from_count": 0
   }
   ```
 - **Response**:
   ```json
   {
-    "article_id": "789",
-    "title": "Fetched News Title",
-    "summary": "Automatically generated summary...",
-    "source": "Indian Express",
-    "published_at": "2023-09-26"
-  }
+     "operation": true,
+     "articles": [
+    {
+      "id": 0,
+      "headline": "string",
+      "description": "string",
+      "datetime": "2024-10-11T18:27:18.836Z",
+      "img_url": "string",
+      "context": "string",
+      "url": "string",
+      "site_name": {
+        "name": "string"
+      },
+      "writer": {
+        "name": "string"
+      },
+      "news_type": {
+        "type": "string"
+      }
+    }
+  ],
+  "message": "string",
+  "error": "string"
+  }      
   ```
 
 ## Bugs and Known Issues
@@ -134,5 +196,4 @@ The News API is a FastAPI-based project that provides a news summarization and r
 - **Text Embedding**: Sentence-BERT
 - **Vector Database**: ChromaDB
 - **Web Scraping**: Custom Scraper
-- **Authentication**: OAuth2 with JWT Tokens
 

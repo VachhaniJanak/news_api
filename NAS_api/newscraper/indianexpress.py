@@ -15,9 +15,7 @@ urls = {
 
 class scraper:
 	def __init__(self, url, headers):
-		self.respone = get(url, headers=headers)
-		self.soup = BeautifulSoup(self.respone.content, 'html.parser')
-		self.written_by = self.soup.find('div', class_="editor-date-logo")
+		self.__soup = BeautifulSoup(get(url, headers=headers).content, 'html.parser')
 
 		self.headline = ''
 		self.description = ''
@@ -31,22 +29,22 @@ class scraper:
 		self.fetch_alldata()
 
 	def __scrape_headline(self):
-		self.headline = self.soup.find('h1').text
+		self.headline = self.__soup.find('h1').text
 
 	def __scrape_description(self):
-		self.description = self.soup.find('h2', class_='synopsis').text
+		self.description = self.__soup.find('h2', class_='synopsis').text
 
 	def __scrape_writer(self):
-		self.writer = self.soup.find('div', class_="editor-details-new-change").find('a').text
+		self.writer = self.__soup.find('div', class_="editor-details-new-change").find('a').text
 
 	def __scrape_datetime(self):
-		self.datetime = self.soup.find('div', class_="editor-details-new-change").find('span')['content']
+		self.datetime = self.__soup.find('div', class_="editor-details-new-change").find('span')['content']
 
 	def __scrape_img(self):
-		self.img_url = self.soup.find('span', class_='custom-caption').img['src']
+		self.img_url = self.__soup.find('span', class_='custom-caption').img['src']
 
 	def __scrape_context(self):
-		raw_context = self.soup.find('div', class_='story_details').find_all('p')
+		raw_context = self.__soup.find('div', class_='story_details').find_all('p')
 		lenght = len(raw_context)
 		for i, html_tag in enumerate(raw_context):
 			temp = html_tag.text[:20].lower()
@@ -63,6 +61,8 @@ class scraper:
 		self.__scrape_datetime()
 		self.__scrape_img()
 		self.__scrape_context()
+
+		del self.__soup
 
 
 class IndianExpress:
