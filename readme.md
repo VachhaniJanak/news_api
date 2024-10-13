@@ -197,3 +197,7 @@ The News API is a FastAPI-based project that provides a news summarization and r
 - **Vector Database**: ChromaDB
 - **Web Scraping**: Custom Scraper
 
+          
+## Demo UI
+- Image of frontend.
+![Project Overview](demo_imgs/1.png)

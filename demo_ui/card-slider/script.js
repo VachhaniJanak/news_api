@@ -7,15 +7,6 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function gettoken() {
-  for (let i of document.cookie.split(";")) {
-    let key = i.split("=")[0];
-    if (key == "tokenid") {
-      return i.split("=")[1];
-    }
-  }
-}
-
 async function typeWriter(txt) {
   if (flage0) {
     flage0 = false;
@@ -32,15 +23,14 @@ async function getsummary(id) {
   if (flage) {
     flage = false;
     loading.className = "loader";
-    await fetch("http://127.0.0.1:8000/get_summary", {
+    await fetch("http://127.0.0.1:8000/summary", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        token_id: gettoken(),
+        token_id: "YJkpSTimAN9SLHtp64JsaPCBowgNoLS13O1Jg3VKLPI",
         article_id: id,
-        count: 0,
       }),
     })
       .then((response) => response.json())
@@ -74,13 +64,13 @@ function create_item(data) {
   card_button.className = "card-button material-symbols-rounded";
 
   //   card_link.href = data.url;
-  card_image.src = data.img_src;
+  card_image.src = data.img_url;
   card_image.alt = "Card Image";
   card_title.textContent = data.headline;
-  badge_designer.textContent = data.site;
+  badge_designer.textContent = data.site_name.name;
   description.textContent = data.context.slice(0, 200) + "....";
   card_button.innerHTML = "arrow_forward";
-  card_button.setAttribute("onclick", `getsummary(${data.article_id})`);
+  card_button.setAttribute("onclick", `getsummary(${data.id})`);
   card_item.appendChild(card_link);
   card_link.appendChild(card_image);
   card_link.appendChild(disc_item);
@@ -94,22 +84,21 @@ function create_item(data) {
 }
 
 window.onload = function () {
-  const resp = fetch("http://127.0.0.1:8000/get_articles", {
+  const resp = fetch("http://127.0.0.1:8000/articles", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      token_id: gettoken(),
-      article_id: 1,
-      count: 0,
+      token_id: "YJkpSTimAN9SLHtp64JsaPCBowgNoLS13O1Jg3VKLPI",
+      from_count: 0,
     }),
   });
 
   resp
     .then((response) => response.json())
     .then((data) => {
-      loaddata(data.data);
+      loaddata(data.articles);
     });
 };
 
@@ -121,21 +110,20 @@ function loaddata(data) {
 
 function loadmore() {
   const count = document.getElementById("card-wrapper").childElementCount;
-  const resp = fetch("http://127.0.0.1:8000/get_articles", {
+  const resp = fetch("http://127.0.0.1:8000/articles", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      token_id: gettoken(),
-      article_id: 1,
-      count: count,
+      token_id: "YJkpSTimAN9SLHtp64JsaPCBowgNoLS13O1Jg3VKLPI",
+      from_count: count,
     }),
   });
 
   resp
     .then((response) => response.json())
     .then((data) => {
-      loaddata(data.data);
+      loaddata(data.articles);
     });
 }
