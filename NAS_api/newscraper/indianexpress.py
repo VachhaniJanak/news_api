@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from requests import get
+from datetime import datetime
 
 urls = {
 	'parent': 'https://indianexpress.com',
@@ -39,6 +40,7 @@ class scraper:
 
 	def __scrape_datetime(self):
 		self.datetime = self.__soup.find('div', class_="editor-details-new-change").find('span')['content']
+		self.datetime = datetime.fromisoformat(self.datetime)
 
 	def __scrape_img(self):
 		self.img_url = self.__soup.find('span', class_='custom-caption').img['src']

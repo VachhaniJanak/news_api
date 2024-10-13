@@ -1,2 +1,2 @@
-from timesofindia import TheTimesOfIndian
-from indianexpress import IndianExpress
+from .timesofindia import TheTimesOfIndian
+from .indianexpress import IndianExpress

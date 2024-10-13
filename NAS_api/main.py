@@ -10,6 +10,7 @@ from database import crudArticle
 from newscraper import IndianExpress, TheTimesOfIndian
 
 flag = True
+delay = 1 # In Hour
 
 app = FastAPI()
 news_site_objs = (IndianExpress(), TheTimesOfIndian())
@@ -25,7 +26,7 @@ app.include_router(latest_router)
 def fetch_news():
 	global flag
 	global old_datetime
-	if flag and (datetime.now() - old_datetime >= timedelta(hours=1)):
+	if flag and (datetime.now() - old_datetime >= timedelta(hours=delay)):
 		flag = False
 
 		for news_site_obj in news_site_objs:
@@ -34,7 +35,7 @@ def fetch_news():
 			for news_type in list(news_site_dict.keys()):
 				for article in news_site_dict[news_type]:
 					article.news_type = news_type
-					article.datetime = datetime.fromisoformat(article.datetime)
+					article.datetime = article.datetime
 					article_crud.add_article(**article.__dict__)
 
 		old_datetime = datetime.now()
