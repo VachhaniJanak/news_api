@@ -1,7 +1,7 @@
 from typing import Type
 
-from NAS_api.database import crudArticle, crudSession, UserSession, Article
-from NAS_api.database.engine import vectordb_engine
+from database import crudArticle, crudSession, UserSession, Article
+from database.engine import vectordb_engine
 
 
 class SimilaritySearch:

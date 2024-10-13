@@ -1,6 +1,6 @@
 from typing import Type
 
-from NAS_api.database import curdUser, crudSession, User
+from database import curdUser, crudSession, User
 
 
 class UserAPI:

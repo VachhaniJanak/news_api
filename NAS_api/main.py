@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from threading import Thread
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -6,14 +7,12 @@ from uvicorn import run
 
 from api import login_reg_router, summary_router, similar_router, latest_router
 from database import crudArticle
-from newscraper.indianexpress import IndianExpress
-
-from threading import Thread
+from newscraper import IndianExpress, TheTimesOfIndian
 
 flag = True
 
 app = FastAPI()
-news_site_objs = (IndianExpress(),)
+news_site_objs = (IndianExpress(), TheTimesOfIndian())
 article_crud = crudArticle()
 old_datetime = datetime.now()
 

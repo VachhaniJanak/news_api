@@ -1,7 +1,7 @@
 from typing import Type
 
-from NAS_api.database import crudSession, crudArticle, UserSession, Article
-from NAS_api.summarize import MODEL
+from database import crudSession, crudArticle, UserSession, Article
+from summarize import MODEL
 
 
 class summarizeArticle:

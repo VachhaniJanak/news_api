@@ -1,7 +1,7 @@
 import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 
-model_path = '/home/admins/Working-Directory/Web-Programming/Fastapi/projects/t5/model'
+model_path = 'model_ckpt'
 checkpoint = 't5-small'
 
 

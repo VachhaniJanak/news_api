@@ -1,6 +1,6 @@
 from typing import Type
 
-from NAS_api.database import crudArticle, crudSession, UserSession, Article
+from database import crudArticle, crudSession, UserSession, Article
 
 
 class LatestArticle:
