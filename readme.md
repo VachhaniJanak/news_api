@@ -10,7 +10,7 @@ The News API is a FastAPI-based project that provides a news summarization and r
 - **SQLite Database Storage**: Stores all scraped news articles in a SQLite database for up to one month.
 - **News Scraping**: Fetches news from supported websites, currently including:
   - Indian Express
-  - (Add more sources as required)
+  - Times Of India
 
 ## Installation
 
